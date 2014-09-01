@@ -1,0 +1,120 @@
+
+
+//Author : Piyush Agarwal
+#include<bits/stdc++.h>
+using namespace std;
+#define ll long long int
+#define mod 1000000007
+#define inp1(a) scanf("%lld",&a);
+#define outl(a) printf("%lld\n",a);
+#define out(a) printf("%lld ",a);
+#define line printf("\n");
+#define FOR(i,b,e) for(i=b;i<=e;i++)
+#define mp make_pair
+#define pb push_back
+#define inp2(a,b) scanf("%lld %lld",&a,&b)
+      
+inline void finp(ll *n)
+{
+   *n = 0;
+    ll ch = getchar_unlocked();
+    while(ch < '0' || ch > '9')
+    ch = getchar_unlocked();
+    while(ch >= '0' && ch <= '9')
+    (*n) = ((*n)<<3) + ((*n)<<1) + ch - '0', ch = getchar_unlocked();
+}
+  
+ll gcd(ll a,ll b)
+{
+    if(b==0)
+          return a;
+    return gcd(b,a%b);
+}
+    
+bool cmp(pair<ll,ll> n1,pair<ll,ll> n2)
+{ 
+         return n1.second<n2.second;
+}
+                    
+ll i,j,k,l,t,m,n,a[1000005];
+vector<pair<ll,ll> > v;
+int main()
+{
+   inp1(t);
+   while(t--)
+   {
+       ll b[1000],freq[1000]={0},hash[10000]={0};
+       v.clear();
+       inp2(k,n);
+       for(i=0;i<n;i++)
+           inp1(a[i]);
+       ll c=0;
+       b[c++]=a[0];
+       for(i=1;i<n;i++)
+       {
+           if(a[i]!=b[c-1])
+                b[c++]=a[i];
+       }
+       for(i=0;i<c;i++)
+            freq[b[i]]++;
+       ll p=0,count=0; 
+       for(i=0;i<n;i++)
+       {  
+         
+           if(p<k)
+           {
+               if(hash[a[i]]==0)
+               {
+                  // printf("%lld ",a[i]);
+                   freq[a[i]]--;
+                   count++;
+                   p++;
+                   hash[a[i]]=1;
+                   v.pb(mp(a[i],freq[a[i]]));
+                   sort(v.begin(),v.end(),cmp);
+               }
+               else
+               {
+                   v.erase(remove(v.begin(),v.end(),mp(a[i],freq[a[i]])),v.end());
+		   freq[a[i]]--;
+                   v.pb(mp(a[i],freq[a[i]]));
+                   sort(v.begin(),v.end(),cmp);
+               }
+           }
+           else
+           {
+                if(hash[a[i]])
+                {
+                     v.erase(remove(v.begin(),v.end(),mp(a[i],freq[a[i]])),v.end());
+		     freq[a[i]]--;
+             	     v.pb(mp(a[i],freq[a[i]]));
+                     sort(v.begin(),v.end(),cmp);
+                }
+                else
+                {
+                //    printf("%lld ",a[i]);
+                    count++;
+                    hash[a[i]]=1;
+                    freq[a[i]]--;
+                    ll fi=v[0].first,sec=v[0].second;
+                    hash[fi]=0;
+                    v.erase(remove(v.begin(),v.end(),mp(fi,sec)),v.end());
+                    v.pb(mp(a[i],freq[a[i]]));
+                    sort(v.begin(),v.end(),cmp);
+                }
+           }/*  
+           printf("\n");
+           for(j=0;j<v.size();j++)
+               printf("%lld %lld\n",v[j].first,v[j].second);
+           printf("loop\n");*/
+           
+       }
+       printf("%lld\n",count);
+   }
+   return 0;
+}
+
+ 
+ 
+
+
